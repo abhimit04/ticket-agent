@@ -1,8 +1,9 @@
 import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
-import { getTrainAvailability } from "../../adapters/trains/indianRailAdapter";
+//import { getTrainAvailability } from "../../adapters/trains/indianRailAdapter";
 import { getTrainPrices } from "../../adapters/trains/trainPricingCrawler";
 import { saveFlightSnapshot, saveTrainSnapshot } from "../../lib/snapshotService";
+import { getTrainAvailability } from "../../adapters/trains/trainScraper";
 
 export default async function handler(req, res) {
   const { type, from, to, date } = req.query;
@@ -11,6 +12,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    // ---------------- FLIGHTS ----------------
     if (type === "flight") {
       const schedules = await searchFlights({ origin: from, destination: to, date });
       const prices = await getFlightPrices({ origin: from, destination: to, date });
@@ -27,9 +29,11 @@ export default async function handler(req, res) {
       return res.json({ type, from, to, date, flights: merged });
     }
 
+    // ---------------- TRAINS ----------------
     if (type === "train") {
-      const seats = await getTrainAvailability({ from, to, date });
+      const seats = await getTrainAvailabilityScraper({ from, to, date });
       const prices = await getTrainPrices({ from, to, date });
+
       const merged = seats.map(s => {
         const p = prices.find(x => x.class === s.class);
         return { ...s, price: p?.price };
