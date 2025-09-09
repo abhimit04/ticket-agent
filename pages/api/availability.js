@@ -7,8 +7,10 @@ import { getTrainAvailability } from "../../adapters/trains/trainScraper";
 
 export default async function handler(req, res) {
     // ✅ Support both GET (req.query) and POST (req.body)
-  const { type, from, to, date } =
-      req.method === "POST" ? req.body : req.query;
+  const source = req.method === "POST" ? req.body || {} : req.query || {};
+  const { type, from, to, date } = source;
+
+console.log("Incoming availability query:", req.query || req.body);
 
   if (!type || !from || !to || !date) {
     return res.status(400).json({ error: "Missing required params" });
