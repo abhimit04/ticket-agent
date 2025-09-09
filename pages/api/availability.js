@@ -20,8 +20,8 @@ export default async function handler(req, res) {
       const schedules = await searchFlights({ origin: from, destination: to, date });
       const prices = await getFlightPrices({ origin: from, destination: to, date });
 
-      const merged = schedules.map(s)) => {
-        const match = prices.find(p) =>
+      const merged = schedules.map(s => {
+        const match = prices.find(p =>
           p.airline?.toLowerCase() === s.airline?.toLowerCase()
         );
         return { ...s, price: match?.price || null, cabin: match?.cabin || null };
@@ -37,8 +37,8 @@ export default async function handler(req, res) {
       const seats = await getTrainAvailabilityScraper({ from, to, date });
       const prices = await getTrainPrices({ from, to, date });
 
-      const merged = seats.map(s)) => {
-        const p = prices.find(x)) => x.class === s.class);
+      const merged = seats.map(s => {
+        const p = prices.find(x => x.class === s.class);
         return { ...s, price: p?.price };
       });
 
