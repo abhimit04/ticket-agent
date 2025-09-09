@@ -1,7 +1,7 @@
 import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
 //import { getTrainAvailability } from "../../adapters/trains/indianRailAdapter";
-import { getTrainPrices } from "../../adapters/trains/trainPricingCrawler";
+//import { getTrainPrices } from "../../adapters/trains/trainPricingCrawler";
 import { saveFlightSnapshot, saveTrainSnapshot } from "../../lib/snapshotService";
 import { getTrainAvailability } from "../../adapters/trains/trainScraper";
 
