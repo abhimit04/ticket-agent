@@ -1,5 +1,5 @@
 import { supabase } from "../../lib/supabaseClient";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 // Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
