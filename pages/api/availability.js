@@ -29,7 +29,9 @@ console.log("Incoming availability query:", req.query || req.body);
         return { ...s, price: match?.price || null, cabin: match?.cabin || null };
       });
 
+      console.log("Calling saveFlightSnapshot with:", { from, to, date });
       await saveFlightSnapshot(merged, { from, to, date });
+
 
       return res.json({ type, from, to, date, flights: merged });
     }
