@@ -1,4 +1,4 @@
-import { searchFlights } from "../../adapters/flights/flightScraperSkyAdapter";
+import { searchFlights } from "../..ticket-agent/adapters/flights/flightScraperSkyAdapter";
 
 (async () => {
   const origin = "DEL";
