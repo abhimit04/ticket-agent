@@ -2,10 +2,10 @@ import fetch from "node-fetch";
 
 export async function searchFlights({ origin, destination, date }) {
   try {
-    const url = `https://flight-scraper-sky.p.rapidapi.com/search-flights?from=${origin}&to=${destination}&date=${date}`;
+    const url = `https://flight-sky.p.rapidapi.com/search-flights?from=${origin}&to=${destination}&date=${date}`;
     const resp = await fetch(url, {
       headers: {
-        "x-rapidapi-host": "flight-scraper-sky.p.rapidapi.com",
+        "x-rapidapi-host": "flight-sky.p.rapidapi.com",
         "x-rapidapi-key": process.env.RAPIDAPI_KEY
       }
     });
