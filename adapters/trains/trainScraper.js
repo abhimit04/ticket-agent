@@ -2,36 +2,46 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 /**
- * Scrape train availability and fare from IRCTC or erail.in
- * @param {string} from - source station code
- * @param {string} to - destination station code
+ * Scrape Trainman for train availability & fare
+ * @param {string} from - station code (e.g. NDLS)
+ * @param {string} to - station code (e.g. BCT)
  * @param {string} date - YYYY-MM-DD
  */
 export async function getTrainAvailability({ from, to, date }) {
   try {
-    const url = `https://erail.in/trains-between-stations/${from}/${to}?date=${date}`;
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
+    const url = `https://www.trainman.in/trains/${from}-${to}-${date}`;
+    const { data } = await axios.get(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+      },
+    });
 
+    const $ = cheerio.load(data);
     const trains = [];
 
-    $("table#trains-table tbody tr").each((i, row) => {
-      const tds = $(row).find("td");
-      trains.push({
-        trainName: $(tds[1]).text().trim(),
-        trainNumber: $(tds[0]).text().trim(),
-        departure: $(tds[2]).text().trim(),
-        arrival: $(tds[3]).text().trim(),
-        classes: $(tds[4]).text().trim().split(","),
-        // placeholder for availability/fare scraping (can extend)
-        availability: null,
-        price: null
-      });
+    $(".train-card").each((i, card) => {
+      const trainName = $(card).find(".train-name").text().trim();
+      const trainNumber = $(card).find(".train-no").text().trim();
+      const departure = $(card).find(".train-depart").text().trim();
+      const arrival = $(card).find(".train-arrive").text().trim();
+
+      const classes = [];
+      $(card)
+        .find(".class-availability")
+        .each((j, cls) => {
+          classes.push({
+            class: $(cls).find(".class-name").text().trim(),
+            availability: $(cls).find(".status-text").text().trim(),
+            fare: $(cls).find(".fare").text().trim(),
+          });
+        });
+
+      trains.push({ trainName, trainNumber, departure, arrival, classes });
     });
 
     return trains;
   } catch (err) {
-    console.error("Train scraper error:", err.message);
+    console.error("Trainman scraper error:", err.message);
     return [];
   }
 }

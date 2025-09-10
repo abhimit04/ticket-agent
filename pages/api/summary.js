@@ -63,13 +63,12 @@ export default async function handler(req, res) {
         }));
 
     } else {
-      const seats = await getTrainAvailability({ from, to, date: today });
-      currentAvailability = seats.map(s => ({
-        trainNo: s.trainNo,
-        class: s.class,
-        availableSeats: s.availableSeats,
-        price: s.price ?? null
-      }));
+      const currentAvailability = await getTrainAvailability({ from, to, date: today });
+
+      // ensure price is null if missing
+      currentAvailability.forEach(s => {
+        if (s.price === undefined) s.price = null;
+      });
     }
 
     // 4️⃣ Top destinations (last 60 days)

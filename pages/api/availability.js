@@ -38,17 +38,17 @@ console.log("Incoming availability query:", req.query || req.body);
 
     // ---------------- TRAINS ----------------
     if (type === "train") {
-      const seats = await getTrainAvailabilityScraper({ from, to, date });
-      const prices = await getTrainPrices({ from, to, date });
+      const availability = await getTrainAvailabilityScraper({ from, to, date });
+      //const prices = await getTrainPrices({ from, to, date });
 
-      const merged = seats.map(s => {
-        const p = prices.find(x => x.class === s.class);
-        return { ...s, price: p?.price };
-      });
+//      const merged = seats.map(s => {
+//        const p = prices.find(x => x.class === s.class);
+//        return { ...s, price: p?.price };
+//      });
 
       await saveTrainSnapshot(merged, { from, to, date });
 
-      return res.json({ type, from, to, date, availability: merged });
+      return res.json({ type, from, to, date, availability });
     }
 
     res.status(400).json({ error: "Invalid type" });
