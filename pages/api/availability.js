@@ -38,7 +38,7 @@ console.log("Incoming availability query:", req.query || req.body);
 
     // ---------------- TRAINS ----------------
     if (type === "train") {
-      const availability = await getTrainAvailabilityScraper({ from, to, date });
+      const availability = await getTrainAvailability({ from, to, date });
       //const prices = await getTrainPrices({ from, to, date });
 
 //      const merged = seats.map(s => {
