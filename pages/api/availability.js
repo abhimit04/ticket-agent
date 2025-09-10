@@ -30,7 +30,7 @@ console.log("Incoming availability query:", req.query || req.body);
 //      });
 
       console.log("Calling saveFlightSnapshot with:", { from, to, date });
-      await saveFlightSnapshot(merged, { from, to, date });
+      await saveFlightSnapshot(flights, { from, to, date });
 
 
       return res.json({ type, from, to, date, flights });
@@ -46,7 +46,7 @@ console.log("Incoming availability query:", req.query || req.body);
 //        return { ...s, price: p?.price };
 //      });
 
-      await saveTrainSnapshot(merged, { from, to, date });
+      await saveTrainSnapshot(availability, { from, to, date });
 
       return res.json({ type, from, to, date, availability });
     }
