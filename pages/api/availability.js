@@ -1,4 +1,4 @@
-import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
+//import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
 //import { getTrainAvailability } from "../../adapters/trains/indianRailAdapter";
 //import { getTrainPrices } from "../../adapters/trains/trainPricingCrawler";
@@ -19,21 +19,21 @@ console.log("Incoming availability query:", req.query || req.body);
   try {
     // ---------------- FLIGHTS ----------------
     if (type === "flight") {
-      const schedules = await searchFlights({ origin: from, destination: to, date });
-      const prices = await getFlightPrices({ origin: from, destination: to, date });
+      const flights = await searchFlights({ origin: from, destination: to, date });
+//      const prices = await getFlightPrices({ origin: from, destination: to, date });
 
-      const merged = schedules.map(s => {
-        const match = prices.find(p =>
-          p.airline?.toLowerCase() === s.airline?.toLowerCase()
-        );
-        return { ...s, price: match?.price || null, cabin: match?.cabin || null };
-      });
+//      const merged = schedules.map(s => {
+//        const match = prices.find(p =>
+//          p.airline?.toLowerCase() === s.airline?.toLowerCase()
+//        );
+//        return { ...s, price: match?.price || null, cabin: match?.cabin || null };
+//      });
 
       console.log("Calling saveFlightSnapshot with:", { from, to, date });
       await saveFlightSnapshot(merged, { from, to, date });
 
 
-      return res.json({ type, from, to, date, flights: merged });
+      return res.json({ type, from, to, date, flights });
     }
 
     // ---------------- TRAINS ----------------

@@ -1,7 +1,7 @@
 // pages/api/summary.js
 import { supabaseServer } from "../../lib/supabase";
 import { GoogleGenerativeAI } from "@google/genai";
-import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
+//import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
 import { getTrainAvailability } from "../../adapters/trains/trainScraper";
 
@@ -47,12 +47,20 @@ export default async function handler(req, res) {
     const today = new Date().toISOString().split("T")[0];
 
     if (type === "flight") {
-      const schedules = await searchFlights({ origin: from, destination: to, date: today });
-      const prices = await getFlightPrices({ origin: from, destination: to, date: today });
-      currentAvailability = schedules.map(s => {
-        const match = prices.find(p => p.airline?.toLowerCase() === s.airline?.toLowerCase());
-        return { ...s, price: match?.price || null, cabin: match?.cabin || null };
-      });
+      const flights = await searchFlights({ origin: from, destination: to, date: today });
+    //  const prices = await getFlightPrices({ origin: from, destination: to, date: today });
+      currentAvailability = flights.map(f => ({
+          flightNumber: f.flightNumber || null,
+          airline: f.airline || null,
+          departure: f.departure || null,
+          arrival: f.arrival || null,
+          duration: f.duration || null,
+          stops: f.stops || 0,
+          cabin: f.cabin || null,
+          price: f.price || null,
+          currency: f.currency || "INR"
+        }));
+
     } else {
       const seats = await getTrainAvailability({ from, to, date: today });
       currentAvailability = seats.map(s => ({

@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-export async function getFlightPrices({ origin, destination, date }) {
+export async function searchFlights({ origin, destination, date }) {
   try {
     const url = `https://flight-scraper-sky.p.rapidapi.com/search-flights?from=${origin}&to=${destination}&date=${date}`;
     const resp = await fetch(url, {
@@ -16,8 +16,13 @@ export async function getFlightPrices({ origin, destination, date }) {
     return data.flights.map(f => ({
       flightNumber: f.flight_number || null,
       airline: f.airline || null,
+      departure: f.departure_time || null,
+      arrival: f.arrival_time || null,
+      duration: f.duration || null,
+      stops: f.stops || 0,
+      cabin: f.cabin || "economy",
       price: f.price || null,
-      cabin: f.cabin || null
+      currency: f.currency || "INR"
     }));
   } catch (err) {
     console.error("FlightScraperSky error:", err);
