@@ -2,6 +2,7 @@
 import { supabaseServer } from "../../lib/supabase";
 import { GoogleGenerativeAI } from "@google/genai";
 //import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
+import { searchFlights } from "../../adapters/flights/flightScraperSkyAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
 import { getTrainAvailability } from "../../adapters/trains/trainScraper";
 

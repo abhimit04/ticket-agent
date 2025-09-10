@@ -1,4 +1,4 @@
-//import { searchFlights } from "../../adapters/flights/aviationStackAdapter";
+import { searchFlights } from "../../adapters/flights/flightScraperSkyAdapter";
 import { getFlightPrices } from "../../adapters/flights/flightScraperSkyAdapter";
 //import { getTrainAvailability } from "../../adapters/trains/indianRailAdapter";
 //import { getTrainPrices } from "../../adapters/trains/trainPricingCrawler";
