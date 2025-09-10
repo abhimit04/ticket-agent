@@ -14,7 +14,7 @@ export default function Home() {
   const searchAvailability = async () => {
     if (!from || !to || !date) return alert("Fill all fields");
     setLoading(true);
-    const res = await fetch(`/api/availability?type=${type}&from=${from}&to=${to}&date=${date}`);
+    const res = await fetch(`/api/test-availability-flight?type=${type}&from=${from}&to=${to}&date=${date}`);
     const data = await res.json();
     setResults(data);
     setLoading(false);
